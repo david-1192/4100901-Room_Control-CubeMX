@@ -1,0 +1,29 @@
+flowchart TD
+    A["Inicio del programa"] --> B["HAL Init"]
+    B --> C["System Clock Config"]
+    C --> D["MX GPIO Init"]
+    D --> E["MX USART2 UART Init"]
+    E --> F["LED Init LED1"]
+    F --> G["Ring Buffer Init Keypad RB"]
+    G --> H["Keypad Init Keypad"]
+    H --> I["printf 'Sistema listo...'"]
+    I --> J["Bucle Principal"]
+    J --> K["printf 'Ingrese la clave de 4 dígitos:'"]
+    K --> L["Pin Index = 0"]
+    L --> M{"Pin Index < 4?"}
+    M -- "Sí" --> N["¿Ring Buffer Read Keypad RB Key From Buffer?"]
+    N -- "No" --> M
+    N -- "Sí" --> O["Guardar Tecla en Pin Buffer"]
+    O --> P["printf 'Tecla %d: ...'"]
+    P --> L
+    M -- "No" --> Q["printf 'PIN ingresado: ...'"]
+    Q --> R{"strcmp(Pin Buffer, Clave) == 0?"}
+    R -- "Sí" --> S["printf 'Clave correcta!'"]
+    S --> T["LED On LED1"]
+    T --> U["HAL Delay 2000"]
+    U --> V["LED Off LED1"]
+    R -- "No" --> W["printf 'Clave incorrecta!'"]
+    V --> X["HAL Delay 500"]
+    W --> X
+    X --> Y["Vaciar Buffer de Teclas"]
+    Y --> J
